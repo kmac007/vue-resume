@@ -8,6 +8,7 @@
         <input type="password" v-model="formData.password" required placeholder="密码">
       </div>
       <div class="actions">
+        <span>{{errorMessage}}</span>
         <input type="submit" value="登录">
         <slot></slot>
       </div>
@@ -33,10 +34,10 @@ export default {
   },
   methods: {
     login() {
-      let {username, password} = this.formData
+      let { username, password } = this.formData
       AV.User.logIn(username, password).then((loginedUser) => {
-         //登录成功后路由跳转=>Main
-         this.$router.replace('/main')
+        //登录成功后路由跳转=>Main
+        this.$router.replace('/main')
       }, (error) => {
         this.errorMessage = getErrorMessage(error)
       })
@@ -59,6 +60,11 @@ export default {
   display: flex;
   justify-content: flex-end;
   margin: 15px 25px;
+  >span {
+    line-height: 37px;
+    font-size: 16px;
+    color: red;
+  }
   >input {
     &:hover {
       background: #000;

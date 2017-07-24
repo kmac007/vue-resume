@@ -8,9 +8,10 @@
         <input type="password" v-model="formData.password" required placeholder="密码">
       </div>
       <div class="row">
-        <input type="text" v-model="formData.email" required placeholder="邮箱">
+        <input type="email" v-model="formData.email" required placeholder="邮箱">
       </div>
       <div class="actions">
+        <span>{{errorMessage}}</span>
         <slot></slot>
         <input type="submit" value="注册">
       </div>
@@ -35,21 +36,21 @@ export default {
       errorMessage: ''
     }
   },
-  methods:{
-    signUp(){
-      let {username,password,email} = this.formData
-      var user = new AV.user()
+  methods: {
+    signUp() {
+      let { username, password, email } = this.formData
+      var user = new AV.User()
       user.setUsername(username)
       user.setPassword(password)
       user.setEmail(email)
-      user.signUp().then((loginedUser)=>{
+      user.signUp().then((loginedUser) => {
         //注册成功后路由跳转=>Main
         this.$router.replace('/main')
       },
-      (error)=>{
-        //获取错误消息
-        this.errorMessage = getErrorMessage(error)
-      })
+        (error) => {
+          //获取错误消息
+          this.errorMessage = getErrorMessage(error)
+        })
     }
   }
 }
@@ -64,12 +65,18 @@ export default {
     border: 1px solid #ebecee;
   }
 }
+
 .actions {
   display: flex;
   justify-content: flex-end;
   margin: 15px 25px;
+  >span {
+    line-height: 37px;
+    font-size: 16px;
+    color: red;
+  }
   >input {
-    &:hover{
+    &:hover {
       background: #000;
       opacity: .45;
       color: #fff;
