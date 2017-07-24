@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form @submit.prevent="login">
+    <form @submit.prevent="signUp">
       <div class="row">
         <input type="text" v-model="formData.username" required placeholder="用户名">
       </div>
@@ -19,8 +19,12 @@
 </template>
 
 <script>
+import AV from '../lib/leancloud'
+import getErrorMessage from '../lib/getErrorMessage'
+import getAVUser from '../lib/getAVUser'
+
 export default {
-  name: 'sign-up-form',
+  name: 'signUpForm',
   data() {
     return {
       formData: {
@@ -29,6 +33,23 @@ export default {
         email: ''
       },
       errorMessage: ''
+    }
+  },
+  methods:{
+    signUp(){
+      let {username,password,email} = this.formData
+      var user = new AV.user()
+      user.setUsername(username)
+      user.setPassword(password)
+      user.setEmail(email)
+      user.signUp().then((loginedUser)=>{
+        //注册成功后路由跳转=>Main
+        this.$router.replace('/main')
+      },
+      (error)=>{
+        //获取错误消息
+        this.errorMessage = getErrorMessage(error)
+      })
     }
   }
 }
