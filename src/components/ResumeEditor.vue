@@ -59,11 +59,13 @@ export default {
 #resume-editor {
   background-color: #f5f6f8;
   width: 33%;
+  min-width: 380px;
   display: flex;
   flex-direction: row;
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, .5);
   >nav {
     background-color: #15222a;
-    width: 100px;
+    min-width: 100px;
     >ol {
       >li {
         display: flex;
@@ -92,21 +94,23 @@ export default {
   overflow: hidden;
   display: block;
 }
-.resumePanels{
+
+.resumePanels {
   display: flex;
   flex-direction: column;
-  >label{
+  width: 230px;
+  >label {
     margin: 10px 20px;
   }
-  >input{
+  >input {
+    width: 100%;
     margin-left: 20px;
-    width: 280px;
     height: 50px;
     vertical-align: top;
-    white-space: wrap;
   }
 }
-.panels{
+
+.panels {
   margin: 20px 0 0 10px;
 }
 </style>

@@ -39,9 +39,9 @@ export default new Vuex.Store({
         }
       ],
       Profile: {
-        name: 'DK',
-        city: 'LA',
-        title: 'id'
+        name: '博格巴',
+        city: '曼彻斯特',
+        intention:'足球运动员'
       },
       Work: [{
           company: 'AL',
@@ -79,15 +79,11 @@ export default new Vuex.Store({
           content: '好好哈哈哈哈哈哈哈哈哈哈哈哈'
         }
       ],
-      Contacts: [{
-          contact: 'wechat',
-          content: 'abc123'
-        },
-        {
-          contact: 'qq',
-          content: '123456'
-        }
-      ]
+      Contacts:  {
+        telephone: '15000000000',
+        email: 'robbchan@foxmail.com',
+        wechat:'kmac007'
+      }
     }
   },
   mutations: {
@@ -95,7 +91,7 @@ export default new Vuex.Store({
       state.selected = payload
     },
     updateResume(state,{path,value}){
-      
+
     }
   }
 })

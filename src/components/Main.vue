@@ -33,7 +33,9 @@ export default {
     flex-grow: 1;
     min-width: 1024px;
     max-width: 1440px;
-    justify-content: space-between;
+    justify-content: space-around;
+    margin-top: 15px;
+    margin-bottom: 15px;
   }
 }
 </style>
