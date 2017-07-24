@@ -24,20 +24,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .main-page{
-    height: 100vh;
+.main-page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  >main {
     display: flex;
-    flex-direction: column;
-    >main {
-      display: flex;
-      min-width: 1024px;
-      max-width: 1440px;
-      margin: 0;
-      display: flex;
-      justify-content: space-around;
-      width: 100%;
-      margin-top: 16px;
-      margin-bottom: 16px;
-    }
+    flex-grow: 1;
+    min-width: 1024px;
+    max-width: 1440px;
+    justify-content: space-between;
   }
+}
 </style>

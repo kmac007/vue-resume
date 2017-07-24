@@ -1,5 +1,5 @@
 <template>
-  <div class="resume-preview">
+  <div id="resume-preview">
     ResumePreview
   </div>
 </template>
@@ -11,8 +11,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .resume-preview{
+  #resume-preview{
     background: red;
-    width: 64%;
+    width: 65%;
   }
 </style>
