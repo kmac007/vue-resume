@@ -73,7 +73,7 @@ export default {
         justify-content: center;
         align-items: center;
         color: #fff;
-        min-height: 90px;
+        min-height: 80px;
         cursor: pointer;
         &.active {
           background-color: #fff;
@@ -103,7 +103,6 @@ export default {
     margin: 10px 20px;
   }
   >input {
-    width: 100%;
     margin-left: 20px;
     height: 50px;
     vertical-align: top;
@@ -112,5 +111,6 @@ export default {
 
 .panels {
   margin: 20px 0 0 10px;
+  overflow: auto;
 }
 </style>
