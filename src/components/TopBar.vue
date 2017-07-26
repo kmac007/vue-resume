@@ -7,7 +7,7 @@
       <span class="welcome">你好:{{user.username}}</span>
       <input type="button" class="minor" value=" 登出" @click="logout">
       <input type="button" class="primary" value="保存" @click="saveResume">
-      <input type="button" class="primary" value="预览">
+      <input type="button" class="primary" value="预览" @click="preview">
     </div>
   </div>
 </template>
@@ -24,6 +24,9 @@ export default {
       AV.User.logOut()
       this.removeUser()
       this.$router.replace('/')
+    },
+    preview(){
+      this.$router.replace('/preview')
     },
     ...mapMutations(['removeUser']),
     ...mapActions(['saveResume'])
