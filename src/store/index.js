@@ -117,7 +117,6 @@ export default new Vuex.Store({
   },
   actions: {
     saveResume({state, commit}, payload) {
-      debugger
       //新建一个Resume的类
       var Resume = AV.Object.extend('Resume')
       var resume = new Resume()
