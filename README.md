@@ -4,6 +4,8 @@
 
 在线预览: [Vue-resume](https://kmac007.github.io/vue-resume/dist/#/)
 
+> 测试用帐号: admin 密码: admin
+
 使用方法：
 
 ``` bash
