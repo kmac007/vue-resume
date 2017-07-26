@@ -4,21 +4,32 @@
       <span>Vue简历编辑器</span>
     </div>
     <div class="options">
-      <span class="welcome">你好:{{userName}}</span>
-      <input type="button" class="minor" value=" 登出">
-      <input type="button" class="primary" value="保存">
+      <span class="welcome">你好:{{user.username}}</span>
+      <input type="button" class="minor" value=" 登出" @click="logout">
+      <input type="button" class="primary" value="保存" @click="saveResume">
       <input type="button" class="primary" value="预览">
     </div>
   </div>
 </template>
 
 <script>
+import AV from 'lib/leancloud'
+import store from '../store/index'
+import { mapState, mapActions,mapMutations } from 'vuex'
 export default {
   name: 'TopBar',
-  data(){
-    return{
-      userName: 'sdfasdfsa'
-    }
+  store,
+  methods: {
+    logout() {
+      AV.User.logOut()
+      this.removeUser()
+      this.$router.replace('/')
+    },
+    ...mapMutations(['removeUser']),
+    ...mapActions(['saveResume'])
+  },
+  computed: {
+    ...mapState(['user'])
   }
 }
 </script>
@@ -31,6 +42,7 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
+
 .logo {
   >span {
     color: #fff;
@@ -39,15 +51,16 @@ export default {
     margin-left: 20px;
   }
 }
-.options{
+
+.options {
   margin-right: 20px;
   font-size: 0;
-  .welcome{
+  .welcome {
     font-size: 16px;
     color: #fff;
     margin-right: 5px;
   }
-  .primary{
+  .primary {
     border: none;
     background-color: #09161c;
     color: #fff;
@@ -55,13 +68,14 @@ export default {
     padding: 0 15px;
     border-right: 1px solid #3d4a50;
     transition: .75s;
+    outline: none;
     cursor: pointer;
-    &:hover{
+    &:hover {
       background-color: #fff;
       color: #000;
     }
   }
-  .minor{
+  .minor {
     border: none;
     background-color: #09161c;
     color: #fff;
@@ -70,7 +84,8 @@ export default {
     transition: 0.75s;
     border-right: 1px solid #3d4a50;
     cursor: pointer;
-    &:hover{
+    outline: none;
+    &:hover {
       background-color: #838d97;
     }
   }

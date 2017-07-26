@@ -1,7 +1,9 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
-import AV from '../lib/leancloud'
-import getAVuser from '../lib/getAVUser'
+import AV from 'lib/leancloud'
+import getAVUser from 'lib/getAVUser'
+import objectPath from 'object-path'
+import getErrorMessage from 'lib/getErrorMessage'
 
 Vue.use(Vuex)
 
@@ -12,101 +14,150 @@ export default new Vuex.Store({
       id: '',
       username: ''
     },
+    resumeConfig: [{
+        field: 'Profile',
+        icon: 'id',
+        keys: ['name', 'city', 'intention', 'sex', 'age', 'assessment']
+      },
+      {
+        field: 'Work',
+        icon: 'work',
+        type: 'array',
+        keys: ['company', 'time', 'details']
+      },
+      {
+        field: 'Education',
+        icon: 'edu',
+        keys: ['school', 'time']
+      },
+      {
+        field: 'Projects',
+        icon: 'project',
+        type: 'array',
+        keys: ['project', 'time', 'details']
+      },
+      {
+        field: 'Hobbys',
+        icon: 'hobby',
+        type: 'array',
+        keys: ['hobby']
+      },
+      {
+        field: 'Contacts',
+        icon: 'contact',
+        keys: ['telephone', 'email', 'github', 'blog']
+      },
+      {
+        field: 'Skills',
+        icon: 'skill',
+        type: 'array',
+        keys: ['skill', 'content']
+      }
+    ],
     resume: {
-      config: [{
-          target: 'Profile',
-          icon: 'id'
-        },
-        {
-          target: 'Work',
-          icon: 'work'
-        },
-        {
-          target: 'Education',
-          icon: 'edu'
-        },
-        {
-          target: 'Projects',
-          icon: 'project'
-        },
-        {
-          target: 'Hobbys',
-          icon: 'hobby'
-        },
-        {
-          target: 'Contacts',
-          icon: 'contact'
-        },
-        {
-          target: 'Skills',
-          icon: 'skill'
-        }
-      ],
-      Profile: {
-        name: '博格巴',
-        city: '曼彻斯特',
-        intention: '足球运动员',
-        sex: '男',
-        age: '24',
-        assessment: '这是我的自我评价自我评自我评价这是我的自我评价自我评自我评价这是我的自我评价自我评自我评价这是我的自我评价自我评自我评价这是我的自我评价自我评自我评价这是我的自我评价自我评自我评价'
-      },
-      Work: [{
-          company: '曼联',
-          time: '2011-2012',
-          content: '我的第一份工作在曼联我的第一份工作在曼联我的第一份工作在曼联我的第一份工作在曼联我的第一份工作在曼联我的第一份工作在曼联我的第一份工作在曼联我的第一份工作在曼联'
-        },
-        {
-          company: '曼联',
-          time: '2016-今',
-          content: '我的第三份工作在曼联我的第三份工作在曼联我的第三份工作在曼联我的第三份工作在曼联我的第三份工作在曼联我的第三份工作在曼联我的第三份工作在曼联我的第三份工作在曼联'
-        }
-      ],
-      Education: {
-        school: '曼彻斯特某某学校(本科)',
-        time: '2013.9-2017.7'
-      },
-      Projects: [{
-        project: '项目1',
-        time: '2017.3',
-        content: '我的第一个项目我的第一个项目我的第一个项目我的第一个项目我的第一个项目我的第一个项目我的第一个项目我的第一个项目我的第一个项目我的第一个项目我的第一个项目'
-      }, {
-        project: '项目2',
-        time: '2017.6',
-        content: '我的第二个项目我的第二个项目我的第二个项目我的第二个项目我的第二个项目我的第二个项目我的第二个项目我的第二个项目我的第二个项目我的第二个项目我的第二个项目'
-      }, ],
-      Hobbys: {
-        hobby1: '足球',
-        hobby2: '篮球',
-        hobby3: '游泳',
-        hobby4: 'DAB'
-      },
-      Contacts: {
-        telephone: '15000000000',
-        email: 'robbchan@foxmail.com',
-        wechat: 'kmac007',
-        github: 'https://github.com/kmac007',
-        blog: 'https://kmac007.github.io'
-      },
-      Skills: [{
-          skill: '花式过人',
-          content: '熟练掌握各种花式过人技巧熟练掌握各种花式过人技巧熟练掌握各种花式过人技巧熟练掌握各种花式过人技巧熟练掌握各种花式过人技巧熟练掌握各种花式过人技巧'
-        },
-        {
-          skill: '远射',
-          content: '熟练各种情况下的远射熟练各种情况下的远射熟练各种情况下的远射熟练各种情况下的远射熟练各种情况下的远射熟练各种情况下的远射'
-        }
-      ]
+      id: ''
     }
   },
   mutations: {
+    //初始化resume结构
+    initState(state, payload) {
+      state.resumeConfig.map((item) => {
+        if (item.type === 'array') {
+          Vue.set(state.resume, item.field, [])
+        } else {
+          Vue.set(state.resume, item.field, {})
+          item.keys.map((key) => {
+            Vue.set(state.resume[item.field], key, '')
+          })
+        }
+      })
+      if (payload) {
+        Object.assign(state, payload)
+      }
+    },
+    //tab切换
     switchTab(state, payload) {
       state.selected = payload
     },
-    updateResume(state, {
-      path,
-      value
-    }) {
+    //更新resume展示，并将其保存在localStorage中
+    updateResume(state, {path,value}) {
+      objectPath.set(state.resume, path, value)
+      localStorage.setItem('resume',JSON.stringify(state.resume))
+    },
+    //设置id与用户{id:..,username:..}
+    setUser(state, payload) {
+      Object.assign(state.user, payload)
+    },
+    //移除用户名和id
+    removeUser(state) {
+      state.user.id = ""
+      // state.user.username = ""
+    },
+    //设置resume的数据
+    setResume(state, payload) {
+      state.resumeConfig.map(({ field }) => {
+        Vue.set(state.resume, field, payload[field])
+      })
+      state.resume.id = payload.id
+    },
+    setResumeId(state, {id}) {
+      state.resume.id = id
+    },
+    addResumeSubField(state, field) {
+      let empty = {}
+      state.resume[field].push(empty)
+      //过滤出与传入参数field相对应的项，由于过滤出获得的数组所以加上索引
+      state.resumeConfig.filter((i) => i.field === field)[0].keys.map((key) => {
+        Vue.set(empty, key, '')
+      })
+    },
+    removeResumeSubField(state, {field,index}) {
+      state.resume[field].splice(index, 1)
+    }
+  },
+  actions: {
+    saveResume({state, commit}, payload) {
+      debugger
+      //新建一个Resume的类
+      var Resume = AV.Object.extend('Resume')
+      var resume = new Resume()
+      //如果这个id存在，
+      if (state.resume.id) {
+        resume.id = state.resume.id
+      }
+      resume.set('Profile', state.resume.Profile)
+      resume.set('Work', state.resume.Work)
+      resume.set('Education', state.resume.Education)
+      resume.set('Projects', state.resume.Projects)
+      resume.set('Hobbys', state.resume.Hobbys)
+      resume.set('Contacts', state.resume.Contacts)
+      resume.set('Skills', state.resume.Skills)
+      resume.set('owner_id', getAVUser().id)
 
+      var acl = new AV.ACL()
+      acl.setPublicReadAccess(true)
+      acl.setWriteAccess(AV.User.current(), true)
+
+      resume.setACL(acl)
+      resume.save().then(function (response) {
+        console.log(response)
+        if (!state.resume.id) {
+          commit('setResumeId', {
+            id: response.id
+          })
+        }
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
+    fetchResume({commit}, payload) {
+      var query = new AV.Query('Resume')
+      query.equalTo('owner_id', getAVUser().id)
+      query.first().then((resume) => {
+        if (resume) {
+          commit('setResume', {id: resume.id,...resume.attributes})
+        }
+      })
     }
   }
 })

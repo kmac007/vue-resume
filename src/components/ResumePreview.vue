@@ -41,7 +41,7 @@
       <div class="hobbies">
         <h3>兴趣爱好</h3>
         <ul class="hobby-item">
-          <li v-for="(value,key) in resume.Hobbys">{{value}}</li>
+          <li v-for="(item,key) in resume.Hobbys">{{item.hobby}}</li>
         </ul>
       </div>
       <div class="self-assessment">
@@ -81,7 +81,7 @@
               <span>{{item.company}}</span>
               <span>{{item.time}}</span>
             </li>
-            <li class="content">{{item.content}}</li>
+            <li class="content">{{item.details}}</li>
           </ul>
         </div>
       </div>
@@ -95,7 +95,7 @@
               <span>{{item.project}}</span>
               <span>{{item.time}}</span>
             </li>
-            <li class="content">{{item.content}}</li>
+            <li class="content">{{item.details}}</li>
           </ul>
         </div>
       </div>
@@ -123,13 +123,8 @@ import { mapState, mapMutations } from 'vuex'
 export default {
   name: 'ResumePreview',
   store,
-  computed: {
-    ...mapState(["resume"]),
-  },
-  methods: {
-    // changeResumePanels(path, value){
-    //   this.$store.commit('updateResume',{path,value})
-    // }
+  computed:{
+    ...mapState(['resume'])
   }
 }
 

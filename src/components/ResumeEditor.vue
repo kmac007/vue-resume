@@ -2,27 +2,29 @@
   <div id="resume-editor">
     <nav>
       <ol>
-        <li v-for="item in resume.config" :class="{active:item['target']===selected}" @click="selected=item['target']">
+        <li v-for="item in resumeConfig" :class="{active:item['field']===selected}" @click="selected=item['field']">
           <svg class="icon" aria-hidden="true">
             <use :xlink:href="`#icon-${item.icon}`"></use>
           </svg>
-          {{item.target}}
+          {{item.field}}
         </li>
       </ol>
     </nav>
     <ol class="panels">
-      <li v-for="item in resume.config" v-show="item['target']===selected">
-        <div v-if="resume[item.target] instanceof Array">
-          <div class="subitem" v-for="(subitem,i) in resume[item.target]">
+      <li v-for="item in resumeConfig" v-show="item.field===selected">
+        <div v-if="item.type === 'array'" class="array-item">
+          <div class="subitem" v-for="(subitem,index) in resume[item.field]">
+            <button class="remove-btn" @click="removeResumeSubField(item.field,index)">X</button>
             <div class="resumePanels" v-for="(value, key) in subitem">
-              <label>{{key}}</label>
-              <input type="text" :placeholder="value" @input="changeResumePanels(`${item.target}.${i}.${key}`,$event.target.value)">
+              <label>{{`${key}`}}</label>
+              <input type="text" :value="value" @input="changeResumePanels(`${item.field}.${index}.${key}`,$event.target.value)">
             </div>
           </div>
+          <button class="add-btn" @click="addResumeSubField(item.field)">增加</button>
         </div>
-        <div v-else class="resumePanels" v-for="(value,key) in resume[item.target]">
+        <div v-else class="resumePanels" v-for="(value,key) in resume[item.field]">
           <label>{{key}}</label>
-          <input type="text" :placeholder="value" @input="changeResumePanels(`${item.target}.${key}`,$event.target.value)">
+          <input type="text" :value="value" @input="changeResumePanels(`${item.field}.${key}`,$event.target.value)">
         </div>
       </li>
     </ol>
@@ -37,7 +39,7 @@ export default {
   name: 'ResumeEditor',
   store,
   computed: {
-    ...mapState(["resume"]),
+    ...mapState(["resume", "resumeConfig"]),
     selected: {
       get() {
         return this.$store.state.selected
@@ -48,9 +50,15 @@ export default {
     }
   },
   methods: {
-    // changeResumePanels(path, value){
-    //   this.$store.commit('updateResume',{path,value})
-    // }
+    //移除增加的Field
+    removeResumeSubField(field, index) {
+      this.$store.commit('removeResumeSubField', { field, index })
+    },
+    ...mapMutations(['addResumeSubField']),
+    //实时更新Panels
+    changeResumePanels(path, value) {
+      this.$store.commit('updateResume', { path, value })
+    }
   }
 }
 </script>
@@ -73,7 +81,7 @@ export default {
         justify-content: center;
         align-items: center;
         color: #fff;
-        min-height: 80px;
+        min-height: 76px;
         cursor: pointer;
         &.active {
           background-color: #fff;
@@ -104,7 +112,7 @@ export default {
   }
   >input {
     margin-left: 20px;
-    height: 50px;
+    height: 40px;
     vertical-align: top;
   }
 }
@@ -112,5 +120,46 @@ export default {
 .panels {
   margin: 20px 0 0 10px;
   overflow: auto;
+}
+
+.subitem {
+  position: relative;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+  .remove-btn {
+    position: absolute;
+    right: 0;
+    top: 5px;
+    border: none;
+    background-color: #15222a;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 50%;
+    outline: none;
+    &:hover {
+      background-color: #ccc;
+      color: #000;
+    }
+  }
+}
+
+.array-item {
+  width: 230px;
+  overflow: hidden;
+  .add-btn {
+    float: right;
+    border: none;
+    cursor: pointer;
+    background-color: #15222a;
+    color: #fff;
+    padding: 5px;
+    border-radius: 3px;
+    outline: none;
+    &:hover {
+      background-color: #ccc;
+      color: #000;
+    }
+  }
 }
 </style>
