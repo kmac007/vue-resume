@@ -88,9 +88,11 @@ export default new Vuex.Store({
     setUser(state, payload) {
       Object.assign(state.user, payload)
     },
-    //移除用户名和id
+    //移除用户名和id,移除state.resume.id
     removeUser(state) {
       state.user.id = ""
+      state.user.username = ""
+      state.resume.id = ""
       // state.user.username = ""
     },
     //设置resume的数据
@@ -121,9 +123,11 @@ export default new Vuex.Store({
       var Resume = AV.Object.extend('Resume')
       var resume = new Resume()
       //如果这个id存在，
+
       if (state.resume.id) {
         resume.id = state.resume.id
       }
+      var currentUserId = getAVUser().id
       resume.set('Profile', state.resume.Profile)
       resume.set('Work', state.resume.Work)
       resume.set('Education', state.resume.Education)
@@ -131,7 +135,8 @@ export default new Vuex.Store({
       resume.set('Hobbys', state.resume.Hobbys)
       resume.set('Contacts', state.resume.Contacts)
       resume.set('Skills', state.resume.Skills)
-      resume.set('owner_id', getAVUser().id)
+      //设置当前用户owner_id
+      resume.set('owner_id', currentUserId)
 
       var acl = new AV.ACL()
       acl.setPublicReadAccess(true)
@@ -139,7 +144,7 @@ export default new Vuex.Store({
 
       resume.setACL(acl)
       resume.save().then(function (response) {
-        console.log(response)
+
         if (!state.resume.id) {
           commit('setResumeId', {
             id: response.id
