@@ -1,21 +1,19 @@
-# vue-resume
+# Vue简历编辑器
 
-> vue resume editor
+一个通过Vue2来构建的一个简历编辑器，通过leancloud提供的API实现了登录注册功能，数据存储在leancloud上。使用Vuex进行状态管理，使用Vue-router2进行路由切换。
 
-## Build Setup
+在线预览: [Vue-resume](https://kmac007.github.io/vue-resume/dist/#/)
+
+使用方法：
 
 ``` bash
+#clone to your computer
+git clone git@github.com:kmac007/vue-resume.git
+
 # install dependencies
 npm install
 
 # serve with hot reload at localhost:8080
 npm run dev
 
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
 ```
-
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
