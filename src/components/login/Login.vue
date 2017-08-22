@@ -1,5 +1,6 @@
 <template>
   <div class="login-wrap">
+    <p class="test">测试用帐号密码分别为admin,admin</p>
     <div class="login">
       <h2>Vue简历编辑器</h2>
       <div v-if="hasUser">
@@ -63,5 +64,14 @@ export default {
     padding: 25px 15px;
     ;
   }
+}
+
+.test {
+  color: #444;
+  font-size: 18px;
+  padding: 4px;
+  position: fixed;
+  top: 25%;
+  border-left: 3px solid #ccc;
 }
 </style>

@@ -14,7 +14,8 @@ export default new Vuex.Store({
       id: '',
       username: ''
     },
-    resumeConfig: [{
+    resumeConfig: [
+      {
         field: 'Profile',
         icon: 'id',
         keys: ['name', 'city', 'intention', 'sex', 'age', 'assessment']
@@ -61,12 +62,12 @@ export default new Vuex.Store({
   mutations: {
     //初始化resume结构
     initState(state, payload) {
-      state.resumeConfig.map((item) => {
+      state.resumeConfig.map(item => {
         if (item.type === 'array') {
           Vue.set(state.resume, item.field, [])
         } else {
           Vue.set(state.resume, item.field, {})
-          item.keys.map((key) => {
+          item.keys.map(key => {
             Vue.set(state.resume[item.field], key, '')
           })
         }
@@ -80,9 +81,9 @@ export default new Vuex.Store({
       state.selected = payload
     },
     //更新resume展示，并将其保存在localStorage中
-    updateResume(state, {path,value}) {
+    updateResume(state, { path, value }) {
       objectPath.set(state.resume, path, value)
-      localStorage.setItem('resume',JSON.stringify(state.resume))
+      localStorage.setItem('resume', JSON.stringify(state.resume))
     },
     //设置id与用户{id:..,username:..}
     setUser(state, payload) {
@@ -90,9 +91,9 @@ export default new Vuex.Store({
     },
     //移除用户名和id,移除state.resume.id
     removeUser(state) {
-      state.user.id = ""
-      state.user.username = ""
-      state.resume.id = ""
+      state.user.id = ''
+      state.user.username = ''
+      state.resume.id = ''
       // state.user.username = ""
     },
     //设置resume的数据
@@ -102,23 +103,23 @@ export default new Vuex.Store({
       })
       state.resume.id = payload.id
     },
-    setResumeId(state, {id}) {
+    setResumeId(state, { id }) {
       state.resume.id = id
     },
     addResumeSubField(state, field) {
       let empty = {}
       state.resume[field].push(empty)
       //过滤出与传入参数field相对应的项，由于过滤出获得的数组所以加上索引
-      state.resumeConfig.filter((i) => i.field === field)[0].keys.map((key) => {
+      state.resumeConfig.filter(i => i.field === field)[0].keys.map(key => {
         Vue.set(empty, key, '')
       })
     },
-    removeResumeSubField(state, {field,index}) {
+    removeResumeSubField(state, { field, index }) {
       state.resume[field].splice(index, 1)
     }
   },
   actions: {
-    saveResume({state, commit}, payload) {
+    saveResume({ state, commit }, payload) {
       //新建一个Resume的类
       var Resume = AV.Object.extend('Resume')
       var resume = new Resume()
@@ -143,23 +144,25 @@ export default new Vuex.Store({
       acl.setWriteAccess(AV.User.current(), true)
 
       resume.setACL(acl)
-      resume.save().then(function (response) {
-
-        if (!state.resume.id) {
-          commit('setResumeId', {
-            id: response.id
-          })
-        }
-      }).catch((error) => {
-        console.log(error)
-      })
+      resume
+        .save()
+        .then(function(response) {
+          if (!state.resume.id) {
+            commit('setResumeId', {
+              id: response.id
+            })
+          }
+        })
+        .catch(error => {
+          console.log(error)
+        })
     },
-    fetchResume({commit}, payload) {
+    fetchResume({ commit }, payload) {
       var query = new AV.Query('Resume')
       query.equalTo('owner_id', getAVUser().id)
-      query.first().then((resume) => {
+      query.first().then(resume => {
         if (resume) {
-          commit('setResume', {id: resume.id,...resume.attributes})
+          commit('setResume', { id: resume.id, ...resume.attributes })
         }
       })
     }

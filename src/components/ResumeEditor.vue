@@ -2,7 +2,7 @@
   <div id="resume-editor">
     <nav>
       <ol>
-        <li v-for="item in resumeConfig" :class="{active:item['field']===selected}" @click="selected=item['field']">
+        <li v-for="(item,index) in resumeConfig" :class="{active:item['field']===selected}" @click="selected=item['field']" :key="index">
           <svg class="icon" aria-hidden="true">
             <use :xlink:href="`#icon-${item.icon}`"></use>
           </svg>
@@ -11,18 +11,18 @@
       </ol>
     </nav>
     <ol class="panels">
-      <li v-for="item in resumeConfig" v-show="item.field===selected">
+      <li v-for="(item,index) in resumeConfig" v-show="item.field===selected" :key="index">
         <div v-if="item.type === 'array'" class="array-item">
-          <div class="subitem" v-for="(subitem,index) in resume[item.field]">
+          <div class="subitem" v-for="(subitem,index) in resume[item.field]" :key="index">
             <button class="remove-btn" @click="removeResumeSubField(item.field,index)">X</button>
-            <div class="resumePanels" v-for="(value, key) in subitem">
+            <div class="resumePanels" v-for="(value, key) in subitem" :key="key">
               <label>{{`${key}`}}</label>
               <input type="text" :value="value" @input="changeResumePanels(`${item.field}.${index}.${key}`,$event.target.value)">
             </div>
           </div>
           <button class="add-btn" @click="addResumeSubField(item.field)">增加</button>
         </div>
-        <div v-else class="resumePanels" v-for="(value,key) in resume[item.field]">
+        <div v-else class="resumePanels" v-for="(value,key) in resume[item.field]" :key="key">
           <label>{{key}}</label>
           <input type="text" :value="value" @input="changeResumePanels(`${item.field}.${key}`,$event.target.value)">
         </div>

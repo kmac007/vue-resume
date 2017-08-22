@@ -12,8 +12,8 @@ export default {
   components: {
     ResumePreview
   },
-  methods:{
-    goback(){
+  methods: {
+    goback() {
       this.$router.replace('/main')
     }
   }
@@ -21,25 +21,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .preview{
-    min-width: 1024px;
-    display: flex;
-    justify-content: center;
-    padding: 20px;
+.preview {
+  min-width: 1024px;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.goback {
+  position: fixed;
+  right: 100px;
+  top: 20px;
+  font-size: 1.5rem;
+  background: #2d78f4;
+  color: #fff;
+  padding: 10px 20px;
+  cursor: pointer;
+  &:hover {
+    box-shadow: 1px 1px 1px #ccc;
+    border-bottom: 1px solid #ccc;
+    opacity: .95;
   }
-  .goback {
-    position: fixed;
-    right: 100px;
-    top: 20px;
-    font-size: 1.5rem;
-    background: #2d78f4;
-    color: #fff;
-    padding: 10px 20px;
-    cursor: pointer;
-    &:hover{
-      box-shadow: 1px 1px 1px #ccc;
-      border-bottom: 1px solid #ccc;
-      opacity: .95;
-    }
-  }
+}
 </style>

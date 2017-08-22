@@ -21,7 +21,7 @@ import AV from 'lib/leancloud'
 import getErrorMessage from 'lib/getErrorMessage'
 import getAVUser from 'lib/getAVUser'
 import store from '../../store/index'
-import {mapActions} from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'loginForm',
@@ -36,21 +36,21 @@ export default {
     }
   },
   methods: {
-   //登录
-   login(){
-     //解构赋值
-     let {username, password} = this.formData
-     AV.User.logIn(username,password).then(()=>{
-       //登录成功后获取leancloud的数据
-       let user = getAVUser()
-       this.$store.commit('setUser',user)
-       //获取数据成功后初始化resume，将数据渲染到页面上
-       //此后跳转=>main
-       this.$router.replace('/main')
-     },(error)=>{
-       this.errorMessage = getErrorMessage(error)
-     })
-   }
+    //登录
+    login() {
+      //解构赋值
+      let { username, password } = this.formData
+      AV.User.logIn(username, password).then(() => {
+        //登录成功后获取leancloud的数据
+        let user = getAVUser()
+        this.$store.commit('setUser', user)
+        //获取数据成功后初始化resume，将数据渲染到页面上
+        //此后跳转=>main
+        this.$router.replace('/main')
+      }, (error) => {
+        this.errorMessage = getErrorMessage(error)
+      })
+    }
   }
 }
 </script>

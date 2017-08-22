@@ -15,7 +15,7 @@
 <script>
 import AV from 'lib/leancloud'
 import store from '../store/index'
-import { mapState, mapActions,mapMutations } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 export default {
   name: 'TopBar',
   store,
@@ -25,7 +25,7 @@ export default {
       this.removeUser()
       this.$router.replace('/')
     },
-    preview(){
+    preview() {
       this.$router.replace('/preview')
     },
     ...mapMutations(['removeUser']),

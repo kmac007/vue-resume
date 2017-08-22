@@ -41,7 +41,7 @@
       <div class="hobbies">
         <h3>兴趣爱好</h3>
         <ul class="hobby-item">
-          <li v-for="(item,key) in resume.Hobbys">{{item.hobby}}</li>
+          <li v-for="(item,key) in resume.Hobbys" :key="key">{{item.hobby}}</li>
         </ul>
       </div>
       <div class="self-assessment">
@@ -75,7 +75,7 @@
         <div class="title">
           <h3>工作经验</h3>
         </div>
-        <div class="work-item" v-for="item in resume.Work">
+        <div class="work-item" v-for="(item,index) in resume.Work" :key="index">
           <ul>
             <li class="item-title">
               <span>{{item.company}}</span>
@@ -89,7 +89,7 @@
         <div class="title">
           <h3>项目经验</h3>
         </div>
-        <div class="project-item" v-for="item in resume.Projects">
+        <div class="project-item" v-for="(item,index) in resume.Projects" :key="index">
           <ul>
             <li class="item-title">
               <span>{{item.project}}</span>
@@ -103,7 +103,7 @@
         <div class="title">
           <h3>技能</h3>
         </div>
-        <div class="skill-item" v-for="item in resume.Skills">
+        <div class="skill-item" v-for="(item,index) in resume.Skills" :key="index">
           <ul>
             <li class="item-title">
               <span>{{item.skill}}</span>
@@ -123,7 +123,7 @@ import { mapState, mapMutations } from 'vuex'
 export default {
   name: 'ResumePreview',
   store,
-  computed:{
+  computed: {
     ...mapState(['resume'])
   }
 }
@@ -137,7 +137,7 @@ export default {
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, .5);
   overflow: auto;
   display: flex;
-      background-color: #ECECEC;
+  background-color: #ECECEC;
   >.section-left {
     width: 35%;
 
@@ -154,7 +154,7 @@ export default {
     padding-bottom: 10px;
     >.blog {
       padding-left: 80px;
-          background-color: #f5f6f7;
+      background-color: #f5f6f7;
       >h3 {
         font-size: 2rem;
       }
@@ -231,20 +231,22 @@ export default {
     }
   }
 }
-.self-assessment{
-  h3{
+
+.self-assessment {
+  h3 {
     font-size: 2rem;
   }
-  >p{
+  >p {
     text-align: left;
     padding: 1rem;
   }
 }
+
 .work,
 .project,
 .skill {
   padding: .5rem;
-      background-color: #f5f6f7;
+  background-color: #f5f6f7;
   .title {
     border-bottom: 2px solid #ccc;
     >h3 {

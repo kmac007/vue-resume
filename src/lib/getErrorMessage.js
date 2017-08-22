@@ -6,6 +6,6 @@ const map = {
   unknow: '请求失败，请稍后再试'
 }
 //运用解构赋值传递错误码
-export default function ({code}) {
+export default function({ code }) {
   return map[code] || map.unknow
 }
