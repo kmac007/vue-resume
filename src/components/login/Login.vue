@@ -71,7 +71,7 @@ export default {
   font-size: 18px;
   padding: 4px;
   position: fixed;
-  top: 25%;
+  top: 20%;
   border-left: 3px solid #ccc;
 }
 </style>
